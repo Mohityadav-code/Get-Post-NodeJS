@@ -22,5 +22,4 @@ const products = [
     },
 ];
 
-console.log('products: ', products);
-module.exports= products
+module.exports = products

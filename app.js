@@ -1,34 +1,55 @@
-const express = require('express');
+const express = require("express");
 
-const app=express()
-const dafa = require('./data.js');
-console.log('data: ', dafa);
-const port=3000;
+const fs = require("fs");
 
-console.log(dafa.length+1);
+const app = express();
 
-app.get("/dafa",(req,res)=>{
-    res.send(dafa)
-})
-app.listen(port,()=>{
-    console.log("server is running");
-})
+const port = 3000;
+
+app.get("/dataOfProducts", (req, res) => {
+  fs.readFile("data.json","utf-8", (err, data) => {
+    if (err) {
+      console.log("There is an error");
+    } else {
+      console.log(data);
+
+      res.send(data);
+    }
+  });
+});
+app.listen(port, () => {
+  console.log("server is running");
+});
 
 app.use(express.json());
 
-app.post("/sendData",(req,res)=>{
-    class data{
-        constructor() {
-                    
-        }
+
+app.post("/sendData", (req, res) => {
+
+  //! read it and then  const dataArray = JSON.parse(data);  convert it into array push into it again convert it into json
+
+  fs.readFile("data.json", (err, data) => {
+    var arr = JSON.parse(data);
+
+    class products {
+      constructor() {}
     }
-    var temp=new data()
-    temp.id=req.body.id
-    temp.name=req.body.name
-    temp.total_quantity=req.body.total_quantity
-    temp.type_of_product=req.body.type_of_product
-    temp.price=req.body.price
-    console.log('dat: ', data);
-    dafa.push(temp)
-    res.send("data submitted")
-})
+    fs.readFile;
+    var temp = new products();
+    temp.id = arr.length + 1;
+    console.log(arr.length);
+    temp.name = req.body.name;
+    temp.total_quantity = req.body.total_quantity;
+    temp.type_of_product = req.body.type_of_product;
+    temp.price = req.body.price;
+    console.log("dat: ", data);
+    arr.push(temp);
+    const dataString = JSON.stringify(arr);
+    fs.writeFile("data.json", `${dataString}`, (err) => {
+      if (err) {
+        console.log("there is an error writing in file");
+      }
+    });
+  });
+  res.send("data submitted");
+});
